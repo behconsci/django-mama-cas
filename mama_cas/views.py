@@ -95,7 +95,7 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
 
                 # return user-id if hrm
                 if 'hrm' in service:
-                    return redirect(service, params={'ticket': st.ticket, 'user_id': request.user.id})
+                    return redirect(service, params={'ticket': st.ticket, 'username': request.user.username})
 
                 return redirect(service, params={'ticket': st.ticket})
             else:
@@ -109,7 +109,7 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
 
                     # return user-id if hrm
                 if 'hrm' in service:
-                    return redirect(service, params={'ticket': st.ticket, 'user_id': request.user.id})
+                    return redirect(service, params={'ticket': st.ticket, 'username': request.user.username})
 
                 return redirect(service, params={'ticket': st.ticket})
 
@@ -160,7 +160,7 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
 
             # return user-id if hrm
             if 'hrm' in service:
-                return redirect(service, params={'ticket': st.ticket, 'user_id': self.request.user.id})
+                return redirect(service, params={'ticket': st.ticket, 'username': self.request.user.username})
 
             return redirect(service, params={'ticket': st.ticket})
         return redirect('cas_login')
