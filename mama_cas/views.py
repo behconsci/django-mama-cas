@@ -92,6 +92,11 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
                 st = ServiceTicket.objects.create_ticket(service=service, user=request.user)
                 if self.warn_user():
                     return redirect('cas_warn', params={'service': service, 'ticket': st.ticket})
+
+                # return user-id if hrm
+                if 'hrm' in service:
+                    return redirect(service, params={'ticket': st.ticket, 'user_id': request.user.id})
+
                 return redirect(service, params={'ticket': st.ticket})
             else:
                 return redirect(service)
@@ -101,7 +106,13 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
                 st = ServiceTicket.objects.create_ticket(service=service, user=request.user)
                 if self.warn_user():
                     return redirect('cas_warn', params={'service': service, 'ticket': st.ticket})
+
+                    # return user-id if hrm
+                if 'hrm' in service:
+                    return redirect(service, params={'ticket': st.ticket, 'user_id': request.user.id})
+
                 return redirect(service, params={'ticket': st.ticket})
+
             else:
                 msg = _("You are logged in as %s") % request.user
                 messages.success(request, msg)
@@ -146,6 +157,11 @@ class LoginView(CsrfProtectMixin, NeverCacheMixin, FormView):
         service = self.request.GET.get('service')
         if service:
             st = ServiceTicket.objects.create_ticket(service=service, user=self.request.user, primary=True)
+
+            # return user-id if hrm
+            if 'hrm' in service:
+                return redirect(service, params={'ticket': st.ticket, 'user_id': self.request.user.id})
+
             return redirect(service, params={'ticket': st.ticket})
         return redirect('cas_login')
 
